@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="JSCube">
+    <meta name="author" content="Linus Yang">
+
+    <title>JSCube</title>
+
+    <link href="lib/css/bootstrap.min.css" rel="stylesheet">
+    <link href="jscube.css" rel="stylesheet">
+</head>
+
+</body>
+    <div id="wrap">
+
+        <div id="help-modal" class="modal fade" role="dialog" aria-labelledby="helpModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a href="#" class="close" data-dismiss="modal">x</a>
+                        <h2>Shortcut Help</h2>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>Press R</strong>: Reset camera</p>
+                        <p><strong>Press B</strong>: Toggle background</p>
+                        <p><strong>Press A</strong>: Toggle anti-aliasing (only available in non-path mode)</p>
+                        <p><strong>Press P</strong>: Toggle HTML5 path</p>
+                        <p><strong>Mouse</strong>: Rotate X or Y axis</p>
+                        <p><strong>Mouse + Shift</strong>: Pan Z axis</p>
+                        <p><strong>Mouse + Ctrl</strong> (<strong>Cmd</strong> on OS X): Pan X or Y axis</p>
+                        <p><strong>Mouse + Shift + Ctrl</strong> (<strong>Cmd</strong> on OS X): Adjust focal length</p>
+                    </div>
+                    <footer class="modal-footer">
+                        <a href="#" class="btn btn-primary" id="help-ok">OK</a>
+                    </footer>
+                </div>
+            </div>
+        </div>
+
+        <div id="color-modal" class="modal fade" role="dialog" aria-labelledby="colorModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Change Color</h2>
+                    </div>
+                    <div class="modal-body">
+                        <p class="text-info">Choose one of following colors to change:</p>
+
+                        <div class="radio">
+                            <label><input type="radio" id="color-random" name="colorRadios" checked>
+                                Random
+                            </label>
+                        </div>
+
+                        <div class="radio">
+                            <label><input type="radio" id="color-white" name="colorRadios">
+                                White
+                            </label>
+                        </div>
+
+                        <div class="radio">
+                            <label><input type="radio" id="color-red" name="colorRadios">
+                                Red
+                            </label>
+                        </div>
+
+                        <div class="radio">
+                            <label><input type="radio" id="color-orange" name="colorRadios">
+                                Orange
+                            </label>
+                        </div>
+
+                        <div class="radio">
+                            <label><input type="radio" id="color-green" name="colorRadios">
+                                Green
+                            </label>
+                        </div>
+
+                        <div class="radio">
+                            <label><input type="radio" id="color-cyan" name="colorRadios">
+                                Cyan
+                            </label>
+                        </div>
+
+                        <div class="radio">
+                            <label><input type="radio" id="color-purple" name="colorRadios">
+                                Purple
+                            </label>
+                        </div>
+
+                    </div>
+                    <footer class="modal-footer">
+                        <a href="#" class="btn btn-default" id="color-cancel">Cancel</a>
+                        <a href="#" class="btn btn-primary" id="color-ok">OK</a>
+                    </footer>
+                </div>
+            </div>
+        </div>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation" id="navbar">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">JSCube</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav" id="cube-nav">
+                        <li class="active" id="bar-cube"><a href="#">Cube</a></li>
+                        <li id="bar-rcube"><a href="#">Rubik's Cube</a></li>
+                        <li id="bar-twenty"><a href="#">Icosahedron</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li id="action-color"><a href="#">Change Color</a></li>
+                                <li id="action-reset"><a href="#">Reset Camera</a></li>
+                                <li id="action-background"><a href="#">Toggle Background</a></li>
+                                <li id="action-anti"><a href="#">Toggle Anti-aliasing</a></li>
+                                <li id="action-path"><a href="#">Toggle HTML5 Path</a></li>
+                                <li class="divider"></li>
+                                <li id="action-help"><a href="#">Shortcut Help</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="canvas-wrapper">
+            <canvas id="canvas">
+                <p class="lead text-center">Your browser does not support JSCube.</p>
+            </canvas>
+        </div>
+
+    </div>
+
+    <div id="footer">
+        <div class="container">
+            <p class="text-muted credit">
+                <span class="text-info">JSCube</span>:
+                Draw 3D objects pixel by pixel on 2D HTML5 canvas.
+                <span class="pull-right">
+                    Copyright &copy; 2013 <a href="http://linusyang.com" target="_blank">Linus Yang</a>
+                </span>
+            </p>
+        </div>
+    </div>
+
+
+    <!--For debug-->
+    <!--<script src="src/basic.js"></script>-->
+    <!--<script src="src/transform.js"></script>-->
+    <!--<script src="src/context.js"></script>-->
+    <!--<script src="src/renderer.js"></script>-->
+    <!--<script src="src/grapher.js"></script>-->
+    <!--<script src="src/camerautil.js"></script>-->
+    <!--<script src="src/mathutil.js"></script>-->
+    <!--<script src="src/shapeutil.js"></script>-->
+    <!--<script src="src/jscube.js"></script>-->
+
+    <script src="lib/js/jquery.min.js"></script>
+    <script src="lib/js/bootstrap.min.js"></script>
+    <script src="jscube.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+    "name": "jscube",
+    "description": "Draw 3D objects pixel by pixel on 2D HTML5 canvas",
+    "author": "Linus Yang",
+    "dependencies": {
+        "coffee-script": "~1.6.3",
+        "snockets": "~1.3.8"
+    },
+    "licenses": [ {
+        "type": "GPLv3"
+    }],
+    "scripts": {
+        "build": "./node_modules/coffee-script/bin/cake build",
+        "clean": "./node_modules/coffee-script/bin/cake clean"
+    }
+}
