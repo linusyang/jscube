@@ -1,3 +1,12 @@
+#
+#   JSCube
+#
+#   Draw 3D objects pixel by pixel on 2D HTML5 canvas
+#   https://github.com/linusyang/jscube
+#
+#   Copyright (c) 2013 Linus Yang
+#
+
 @VectorUtil =
   # triangle functions
   signTriangle2d: (p1, p2, p3) ->
