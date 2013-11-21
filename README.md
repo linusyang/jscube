@@ -9,7 +9,7 @@ A simple demo to draw 3D objects __pixel by pixel__ on 2D HTML5 canvas by only u
 
 Inspired by [Pre3d](https://github.com/deanm/pre3d) project, totally re-written in [CoffeeScript](http://coffeescript.org/). Web page is powered by [Bootstrap](http://getbootstrap.com/).
 
-Please see the [online demo](http://linusyang.github.io/jscube/).
+Please see the online demo: [linusyang.com/jscube](http://linusyang.com/jscube/).
 
 Build
 -----
