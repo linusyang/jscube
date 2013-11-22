@@ -49,8 +49,6 @@
       else
         listener {
           is_clicking: state.is_clicking,
-          canvas_x: state.last_x,
-          canvas_y: state.last_y,
           delta_x: delta_x,
           delta_y: delta_y,
           shift: e.shiftKey,
@@ -66,39 +64,63 @@
     return
 
   registerTouchListener: (canvas, listener) ->
+    scroll_threshold = 5
     state =
       first_event: true
       is_clicking: false
-      last_x: 0
-      last_y: 0
+      two_finger: false
+      last_x0: 0
+      last_y0: 0
+      last_x1: 0
+      last_y1: 0
+
+    getDist = (x0, x1, y0, y1) ->
+      Math.sqrt (x0 - x1) * (x0 - x1) + (y0 - y1) * (y0 - y1)
 
     touchStartEvent = (e) ->
       state.is_clicking = true
-      state.last_x = e.touches[0].clientX
-      state.last_y = e.touches[0].clientY
+      state.last_x0 = e.touches[0].clientX
+      state.last_y0 = e.touches[0].clientY
+      if e.touches.length == 2
+        state.two_finger = true
+        state.last_x1 = e.touches[1].clientX
+        state.last_y1 = e.touches[1].clientY
       e.preventDefault()
       return false
     touchEndEvent = (e) ->
       state.is_clicking = false
+      state.two_finger = false
       e.preventDefault()
       return false
     touchMoveEvent = (e) ->
-      delta_x = state.last_x - e.touches[0].clientX
-      delta_y = state.last_y - e.touches[0].clientY
-      state.last_x = e.touches[0].clientX
-      state.last_y = e.touches[0].clientY
+      is_scroll = false
+      is_pinch = false
+      if state.two_finger and e.touches.length == 2
+        last_dist = getDist state.last_x0, state.last_x1,
+          state.last_y0, state.last_y1
+        now_dist = getDist e.touches[0].clientX, e.touches[1].clientX,
+          e.touches[0].clientY, e.touches[1].clientY
+        delta_dist = now_dist - last_dist
+        is_scroll = delta_dist > -scroll_threshold and delta_dist < scroll_threshold
+        is_pinch = not is_scroll
+        delta_x = state.last_x0 - e.touches[0].clientX
+        delta_y = if is_scroll then state.last_y0 - e.touches[0].clientY else delta_dist
+        state.last_x1 = e.touches[1].clientX
+        state.last_y1 = e.touches[1].clientY
+      else
+        delta_x = state.last_x0 - e.touches[0].clientX
+        delta_y = state.last_y0 - e.touches[0].clientY
+      state.last_x0 = e.touches[0].clientX
+      state.last_y0 = e.touches[0].clientY
       if state.first_event
         state.first_event = false
       else
         listener {
           is_clicking: state.is_clicking,
-          canvas_x: state.last_x,
-          canvas_y: state.last_y,
           delta_x: delta_x,
           delta_y: delta_y,
-          touch: true,
-          shift: false,
-          ctrl: false
+          shift: is_pinch,
+          ctrl: is_scroll,
         }
       e.preventDefault()
       return false
@@ -132,14 +154,14 @@
       return if not info.is_clicking
       if info.shift and info.ctrl
         camera_state.focal_length = clamp 0.05, 10,
-          camera_state.focal_length + (info.delta_y * 0.01)
+          camera_state.focal_length + (info.delta_y * 0.005)
       else if info.shift
-        camera_state.z += info.delta_y * 0.01
+        camera_state.z += info.delta_y * 0.1
         if opts.zAxisLimit? and camera_state.z > opts.zAxisLimit
           camera_state.z = opts.zAxisLimit
       else if info.ctrl
-        camera_state.x -= info.delta_x * 0.01
-        camera_state.y -= info.delta_y * 0.01
+        camera_state.x -= info.delta_x * 0.02
+        camera_state.y += info.delta_y * 0.02
       else
         camera_state.rotate_y -= info.delta_x * 0.01
         camera_state.rotate_x -= info.delta_y * 0.01

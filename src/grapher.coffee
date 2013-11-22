@@ -67,6 +67,9 @@ class @Grapher
       @draw()
     return
 
+  disableAntiAlias: ->
+    @renderer.ctx.anti_alias = false
+
   isUsePath: ->
     @renderer.ctx.use_path
 

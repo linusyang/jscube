@@ -23,14 +23,44 @@
                         <h2>Shortcut Help</h2>
                     </div>
                     <div class="modal-body">
-                        <p><strong>Press R</strong>: Reset camera</p>
-                        <p><strong>Press B</strong>: Toggle background</p>
-                        <p><strong>Press A</strong>: Toggle anti-aliasing (only available in non-path mode)</p>
-                        <p><strong>Press P</strong>: Toggle HTML5 path</p>
-                        <p><strong>Mouse</strong>: Rotate X or Y axis</p>
-                        <p><strong>Mouse + Shift</strong>: Pan Z axis</p>
-                        <p><strong>Mouse + Ctrl</strong> (<strong>Cmd</strong> on OS X): Pan X or Y axis</p>
-                        <p><strong>Mouse + Shift + Ctrl</strong> (<strong>Cmd</strong> on OS X): Adjust focal length</p>
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <td><strong>Event <span class="text-muted small">Touch Event</span></strong></td>
+                                    <td><strong>Action</strong></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Press R</td>
+                                    <td>Reset camera</td>
+                                </tr>
+                                <tr>
+                                    <td>Press B</td>
+                                    <td>Toggle background</td>
+                                </tr>
+                                <tr>
+                                    <td>Press A</td>
+                                    <td>Toggle anti-aliasing (Only for non-path mode)</td>
+                                </tr>
+                                <tr>
+                                    <td>Press P</td>
+                                    <td>Toggle HTML5 path</td>
+                                </tr>
+                                <tr>
+                                    <td>Mouse <span class="text-muted small">One-finger touch</span></td>
+                                    <td>Rotate X or Y axis</td>
+                                </tr>
+                                <tr>
+                                    <td>Mouse + Shift <span class="text-muted small">Two-finger pinch</span></td>
+                                    <td>Pan Z axis (Zoom)</td>
+                                </tr>
+                                <tr>
+                                    <td>Mouse + Ctrl/Cmd <span class="text-muted small">Two-finger swipe</span></td>
+                                    <td>Pan X or Y axis (Translation)</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                     <footer class="modal-footer">
                         <a href="#" class="btn btn-primary" id="help-ok">OK</a>
@@ -99,6 +129,23 @@
             </div>
         </div>
 
+        <div id="path-modal" class="modal fade" role="dialog" aria-labelledby="pathModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3><span class="text-danger">Warning </span><span class="small">Disable HTML5 Path on Mobile Device</span></h3>
+                    </div>
+                    <div class="modal-body">
+                        <p>Disabling HTML5 path rendering on the mobile device may cause the canvas very laggy. Are you sure to disable it?</p>
+                    </div>
+                    <footer class="modal-footer">
+                        <a href="#" class="btn btn-default" id="path-cancel">Cancel</a>
+                        <a href="#" class="btn btn-primary" id="path-ok">OK</a>
+                    </footer>
+                </div>
+            </div>
+        </div>
+
         <div class="navbar navbar-default navbar-fixed-top" role="navigation" id="navbar">
             <div class="container">
                 <div class="navbar-header">
@@ -154,6 +201,9 @@
         </div>
     </div>
 
+    <script src="lib/js/jquery.min.js"></script>
+    <script src="lib/js/bootstrap.min.js"></script>
+    <script src="jscube.min.js"></script>
 
     <!--For debug-->
     <!--<script src="src/basic.js"></script>-->
@@ -165,9 +215,5 @@
     <!--<script src="src/mathutil.js"></script>-->
     <!--<script src="src/shapeutil.js"></script>-->
     <!--<script src="src/jscube.js"></script>-->
-
-    <script src="lib/js/jquery.min.js"></script>
-    <script src="lib/js/bootstrap.min.js"></script>
-    <script src="jscube.min.js"></script>
 </body>
 </html>

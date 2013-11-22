@@ -5,7 +5,7 @@ Copyright (c) 2013 Linus Yang
 
 Introduction
 -----
-A simple demo to draw 3D objects __pixel by pixel__ on 2D HTML5 canvas by only ultilizing `createImageData` and `putImageData` API. Simple anti-aliasing algorithm is added. Both mouse and touch screen are supported.
+A simple demo to draw 3D objects __pixel by pixel__ on 2D HTML5 canvas by only ultilizing `createImageData` and `putImageData` API. Simple anti-aliasing algorithm is added. Support both mouse events and touch screen with multi-touch guestures.
 
 Inspired by [Pre3d](https://github.com/deanm/pre3d) project, totally re-written in [CoffeeScript](http://coffeescript.org/). Web page is powered by [Bootstrap](http://getbootstrap.com/).
 

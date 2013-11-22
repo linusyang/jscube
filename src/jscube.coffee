@@ -19,6 +19,11 @@
 $ ->
   window.cubegrapher = new Grapher $("#canvas")[0]
 
+  # Detect mobile device
+  is_mobile_device = false
+  if navigator.userAgent.match /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
+    is_mobile_device = true
+
   # Grapher initialize
   grapher = window.cubegrapher
   grapher.genCubes(false)
@@ -52,6 +57,12 @@ $ ->
     grapher.toggleBackground()
 
   changePath = ->
+    if is_mobile_device and grapher.isUsePath()
+      $('#path-modal').modal "show"
+    else
+      togglePath()
+
+  togglePath = ->
     if grapher.isUsePath()
       $("#action-anti").removeClass "disabled"
     else
@@ -117,6 +128,15 @@ $ ->
     e.preventDefault()
     $('#help-modal').modal "hide"
 
+  $("#path-cancel").click (e) ->
+    e.preventDefault()
+    $('#path-modal').modal "hide"
+
+  $("#path-ok").click (e) ->
+    togglePath()
+    e.preventDefault()
+    $('#path-modal').modal "hide"
+
   # Navbar actions
   $("#cube-nav li").click (e) ->
     $("#cube-nav li.active").removeClass "active"
@@ -137,5 +157,9 @@ $ ->
     grapher.genTwenty()
     grapher.drawWithColor(current_color)
 
-  resizeDraw()
+  if is_mobile_device
+    grapher.disableAntiAlias()
+    togglePath()
+  else
+    resizeDraw()
   return
