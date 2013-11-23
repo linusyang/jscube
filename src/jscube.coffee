@@ -26,6 +26,7 @@ $ ->
 
   # Grapher initialize
   grapher = window.cubegrapher
+  grapher.scale = if window.devicePixelRatio > 0 then window.devicePixelRatio else 1
   grapher.genCubes(false)
   current_color = "color-random"
 
@@ -38,9 +39,14 @@ $ ->
   resizeCanvas = ->
     w = $("#canvas-wrapper").width()
     h = $("#canvas-wrapper").height()
-    $("#canvas").attr "width", "#{w}px"
-    $("#canvas").attr "height", "#{h}px"
-    grapher.setSize w, h
+    sw = Math.floor w * grapher.scale
+    sh = Math.floor h * grapher.scale
+    $("#canvas").attr "width", "#{sw}px"
+    $("#canvas").attr "height", "#{sh}px"
+    if grapher.scale > 1
+      $("#canvas").css "width", "#{w}px"
+      $("#canvas").css "height", "#{h}px"
+    grapher.setSize sw, sh
     return
 
   resizeDraw = ->
@@ -56,12 +62,6 @@ $ ->
     $("#canvas-wrapper").css "background-color", if grapher.bg_white then "black" else "white"
     grapher.toggleBackground()
 
-  changePath = ->
-    if is_mobile_device and grapher.isUsePath()
-      $('#path-modal').modal "show"
-    else
-      togglePath()
-
   togglePath = ->
     if grapher.isUsePath()
       $("#action-anti").removeClass "disabled"
@@ -69,6 +69,12 @@ $ ->
       $("#action-anti").addClass "disabled"
     resizeCanvas()
     grapher.togglePath()
+
+  changePath = ->
+    if is_mobile_device and grapher.isUsePath()
+      $('#path-modal').modal "show"
+    else
+      togglePath()
 
   # Window event
   $(window).resize ->

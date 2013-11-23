@@ -13,6 +13,7 @@ class @Grapher
     @gshapes = null
     @dtrans = new Transform()
     @bg_white = true
+    @scale = 1
 
     @black_color = new RGBA 0, 0, 0, 1
     @white_color = new RGBA 1, 1, 1, 1
