@@ -66,15 +66,6 @@ class @RGBA
   dup: ->
     new RGBA @r, @g, @b, @a
 
-  #Alpha compositing
-  mix: (rgba) ->
-    na = rgba.a + @a * (1 - rgba.a)
-    @r = (rgba.r * rgba.a + (1 - rgba.a) * @r * @a) / na
-    @g = (rgba.g * rgba.a + (1 - rgba.a) * @g * @a) / na
-    @b = (rgba.b * rgba.a + (1 - rgba.a) * @b * @a) / na
-    @a = na
-    return
-
 class @QuadFace
   constructor: (v0, v1, v2, v3) ->
     @setQuad v0, v1, v2, v3
