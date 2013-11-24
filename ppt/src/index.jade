@@ -1,0 +1,206 @@
+!!! 5
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    title JSCube
+    link(rel='stylesheet', type='text/css', href='bower_components/prism/themes/prism-funky.css')
+    link(rel='stylesheet', type='text/css', href='ppt.css')
+
+  body
+
+    article
+
+      section
+        h2 Hello.
+
+      section
+        h2 Welcome to
+        h1 <strong>JSCube</strong>
+
+      section
+        h2 Draw <strong>3D</strong> objects pixel by pixel on
+        h1 <strong>2D</strong> HTML5 canvas
+
+      section
+        h2 Brought to you by
+        hr
+        table
+          tr
+            td <big>Linus Yang</big>
+
+      section
+        h1 Features
+
+      section
+        ul
+          li Web application for modern browsers
+          li 3D engine on HTML5 <strong>2D</strong> canvas
+          li Pixel-based rendering with <strong>anti-aliasing</strong>
+          li <strong>No</strong> WebGL
+          li Support mouse and keyboard
+          li Support <strong>multi-touch</strong> screen
+          li Ready for <strong>Retina display</strong>
+
+      section
+        h1 Demo
+        h2 <a href="http://linusyang.com/jscube/" target="_blank">linusyang.com/jscube</a>
+
+      section
+        h1 Implementation
+
+      section
+        h2 CoffeeScript
+        hr
+        ul
+          li A little language that <strong>compiles</strong> into JavaScript
+          li Brevity and readability
+          li Inspired by Ruby, Python and Haskell
+          li Support <strong>Object-Oriented Programming</strong>
+
+      section
+        h2 HTML5 Canvas
+        hr
+        ul
+          li Supported by most modern browsers, even <strong>mobile</strong>
+          li Self-managed buffer created by <span class="inline-code">createImageData</span>
+          li <span class="inline-code">putImageData</span> API is used for pixel drawing<sup>*</sup>
+          li <span class="tiny">* HTML5 Path for mobile devices with limited resources</span>
+
+      section
+        h1 Algorithms
+
+      section
+        ul
+          li 3D Projection to 2D
+          li Triangle Rasterization
+          li Edge Anti-aliasing
+          li Alpha Compositing
+
+      section
+        h2 3D Projection
+        h3 Perspective projection
+        hr
+        p <span class="inline-code">camerautil.coffee</code>
+        code.language-coffeescript
+          pre.
+            setCamera: (grapher, state, draw_now = true) ->
+              renderer = grapher.renderer
+              renderer.camera.focal_length = state.focal_length
+              ct = renderer.camera.transform
+              ct.reset()
+              ct.rotateZ state.rotate_z
+              ct.rotateY state.rotate_y
+              ct.rotateX state.rotate_x
+              ct.translate state.x, state.y, state.z
+              grapher.draw() if draw_now
+              return
+
+      section
+        h2 3D Projection
+        h3 Pinhole camera model
+        hr
+        p <span class="inline-code">renderer.coffee</code>
+        code.language-coffeescript
+          pre.
+            # Pinhole camera model
+            projectPointToCanvas: (p) ->
+              v = @camera.focal_length / -p.z;
+              scale = @scale_
+            x: p.x * v * scale + @xoff_,
+            y: p.y * v * -scale + scale
+
+      section
+        h2 3D Projection
+        h3 Occlusion culling and surface lighting
+        hr
+        p <span class="inline-code">renderer.coffee</code>
+        code.language-coffeescript
+          pre.
+            for qf, j in shape.quads
+              # ...
+              continue if draw_backfaces != true and
+                VectorUtil.dotProduct3d(centroid, n1) > 0 and
+                VectorUtil.dotProduct3d(centroid, n2) > 0
+
+              intensity = VectorUtil.dotProduct3d({x: 0, y: 0, z: 1}, n1)
+              # ...
+
+      section
+        h2 Triangle Rasterization
+        h3 <strong>Barycentric Algorithm</strong>
+        // Image from http://www.sunshine2k.de/coding/java/TriangleRasterization/TriangleRasterization.html
+        img(src="img/boundingbox.png")
+
+      section
+        h2 Barycentric Algorithm
+        hr
+        ul
+          li Determine the bordering box
+          li Scan horizonally
+          li Set pixels in the triangle
+          li Optimize on the edge
+
+      section
+        h2 Edge Anti-aliasing
+        h3 <strong>Xiaolin Wu's Line Algorithm</strong>
+        // Image from http://freespace.virgin.net/hugo.elias/graphics/x_wuline.htm
+        img(src="img/x_wul6.gif")
+
+      section
+        h2 Xiaolin Wu's Line Algorithm
+        hr
+        ul
+          li Similar with Bresenham's algorithm
+          li <strong>Fast</strong> for anti-aliasing
+          li Draw <strong>pairs</strong> of pixels straddling the line
+          li Draw <strong>end points</strong> separately
+
+      section
+        h2 Alpha Compositing
+        // Image from http://en.wikipedia.org/wiki/Alpha_compositing
+        img(src="img/ac.png")
+
+      section
+        h2 Alpha Compositing
+        hr
+        p <span class="inline-code">context.coffee</code>
+        code.language-coffeescript
+          pre.
+            na = a1 + a0 * (1 - a1)
+            R0 = (R1 * a1 + (1 - a1) * R0 * a0) / na
+            G0 = (G1 * a1 + (1 - a1) * G0 * a0) / na
+            B0 = (B1 * a1 + (1 - a1) * B0 * a0) / na
+            a1 = na
+
+      section
+        h2 References
+        hr
+        p Pre3d. <span class="refurl">https://github.com/deanm/pre3d</code>
+        p Software Rasterization Algorithms for Filling Triangles. <span class="refurl">http://www.sunshine2k.de/coding/java/TriangleRasterization/TriangleRasterization.html</code>
+        p Advanced Rasterization. <span class="refurl">http://devmaster.net/posts/6145/advanced-rasterization</code>
+        p Wu Anti-aliased Lines. <span class="refurl">http://freespace.virgin.net/hugo.elias/graphics/x_wuline.htm</code>
+        p Xiaolin Wu's line algorithm. <span class="refurl">http://en.wikipedia.org/wiki/Xiaolin_Wu%27s_line_algorithm</code>
+        p Alpha compositing. <span class="refurl">http://en.wikipedia.org/wiki/Alpha_compositing</code>
+
+      section
+        h2 Open-source on Github
+        h2 <a href="https://github.com/linusyang/jscube/" target="_blank">github.com/linusyang/jscube</a>
+        hr
+        ul
+          li Slides at <a href="https://linusyang.com/jscube/ppt/" target="_blank">linusyang.com/jscube/ppt</a>
+          li Also open-sourced on Github
+
+      section
+        h2 Questions?
+
+      section
+        h2 Thanks :)
+
+    script(src='bower_components/bespoke.js/dist/bespoke.min.js')
+    script(src='bower_components/bespoke-bullets/dist/bespoke-bullets.min.js')
+    script(src='bower_components/bespoke-hash/dist/bespoke-hash.min.js')
+    script(src='bower_components/bespoke-state/dist/bespoke-state.min.js')
+    script(src='bower_components/prism/prism.js')
+    script(src='bower_components/prism/components/prism-coffeescript.min.js')
+    script(src='ppt.js')

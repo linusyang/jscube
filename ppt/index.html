@@ -1,0 +1,31 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>JSCube</title><link rel="stylesheet" type="text/css" href="bower_components/prism/themes/prism-funky.css"><link rel="stylesheet" type="text/css" href="ppt.css"></head><body><article><section><h2>Hello.</h2></section><section><h2>Welcome to</h2><h1><strong>JSCube</strong></h1></section><section><h2>Draw <strong>3D</strong> objects pixel by pixel on</h2><h1><strong>2D</strong> HTML5 canvas</h1></section><section><h2>Brought to you by</h2><hr><table><tr><td><big>Linus Yang</big></td></tr></table></section><section><h1>Features</h1></section><section><ul><li>Web application for modern browsers</li><li>3D engine on HTML5 <strong>2D</strong> canvas</li><li>Pixel-based rendering with <strong>anti-aliasing</strong></li><li><strong>No</strong> WebGL</li><li>Support mouse and keyboard</li><li>Support <strong>multi-touch</strong> screen</li><li>Ready for <strong>Retina display</strong></li></ul></section><section><h1>Demo</h1><h2><a href="http://linusyang.com/jscube/" target="_blank">linusyang.com/jscube</a></h2></section><section><h1>Implementation</h1></section><section><h2>CoffeeScript</h2><hr><ul><li>A little language that <strong>compiles</strong> into JavaScript</li><li>Brevity and readability</li><li>Inspired by Ruby, Python and Haskell</li><li>Support <strong>Object-Oriented Programming</strong></li></ul></section><section><h2>HTML5 Canvas</h2><hr><ul><li>Supported by most modern browsers, even <strong>mobile</strong></li><li>Self-managed buffer created by <span class="inline-code">createImageData</span></li><li><span class="inline-code">putImageData</span> API is used for pixel drawing<sup>*</sup></li><li><span class="tiny">* HTML5 Path for mobile devices with limited resources</span></li></ul></section><section><h1>Algorithms</h1></section><section><ul><li>3D Projection to 2D</li><li>Triangle Rasterization</li><li>Edge Anti-aliasing</li><li>Alpha Compositing</li></ul></section><section><h2>3D Projection</h2><h3>Perspective projection</h3><hr><p><span class="inline-code">camerautil.coffee</code></p><code class="language-coffeescript"><pre>setCamera: (grapher, state, draw_now = true) -&gt;
+  renderer = grapher.renderer
+  renderer.camera.focal_length = state.focal_length
+  ct = renderer.camera.transform
+  ct.reset()
+  ct.rotateZ state.rotate_z
+  ct.rotateY state.rotate_y
+  ct.rotateX state.rotate_x
+  ct.translate state.x, state.y, state.z
+  grapher.draw() if draw_now
+  return
+  </pre></code></section><section><h2>3D Projection</h2><h3>Pinhole camera model</h3><hr><p><span class="inline-code">renderer.coffee</code></p><code class="language-coffeescript"><pre># Pinhole camera model
+projectPointToCanvas: (p) -&gt;
+  v = @camera.focal_length / -p.z;
+  scale = @scale_
+x: p.x * v * scale + @xoff_,
+y: p.y * v * -scale + scale
+</pre></code></section><section><h2>3D Projection</h2><h3>Occlusion culling and surface lighting</h3><hr><p><span class="inline-code">renderer.coffee</code></p><code class="language-coffeescript"><pre>for qf, j in shape.quads
+  # ...
+  continue if draw_backfaces != true and
+    VectorUtil.dotProduct3d(centroid, n1) &gt; 0 and
+    VectorUtil.dotProduct3d(centroid, n2) &gt; 0
+    
+  intensity = VectorUtil.dotProduct3d({x: 0, y: 0, z: 1}, n1)
+  # ...
+  </pre></code></section><section><h2>Triangle Rasterization</h2><h3><strong>Barycentric Algorithm</strong></h3><!-- Image from http://www.sunshine2k.de/coding/java/TriangleRasterization/TriangleRasterization.html--><img src="img/boundingbox.png"></section><section><h2>Barycentric Algorithm</h2><hr><ul><li>Determine the bordering box</li><li>Scan horizonally</li><li>Set pixels in the triangle</li><li>Optimize on the edge</li></ul></section><section><h2>Edge Anti-aliasing</h2><h3><strong>Xiaolin Wu's Line Algorithm</strong></h3><!-- Image from http://freespace.virgin.net/hugo.elias/graphics/x_wuline.htm--><img src="img/x_wul6.gif"></section><section><h2>Xiaolin Wu's Line Algorithm</h2><hr><ul><li>Similar with Bresenham's algorithm</li><li><strong>Fast</strong> for anti-aliasing</li><li>Draw <strong>pairs</strong> of pixels straddling the line</li><li>Draw <strong>end points</strong> separately</li></ul></section><section><h2>Alpha Compositing</h2><!-- Image from http://en.wikipedia.org/wiki/Alpha_compositing--><img src="img/ac.png"></section><section><h2>Alpha Compositing</h2><hr><p><span class="inline-code">context.coffee</code></p><code class="language-coffeescript"><pre>na = a1 + a0 * (1 - a1)
+R0 = (R1 * a1 + (1 - a1) * R0 * a0) / na
+G0 = (G1 * a1 + (1 - a1) * G0 * a0) / na
+B0 = (B1 * a1 + (1 - a1) * B0 * a0) / na
+a1 = na
+</pre></code></section><section><h2>References</h2><hr><p>Pre3d. <span class="refurl">https://github.com/deanm/pre3d</code></p><p>Software Rasterization Algorithms for Filling Triangles. <span class="refurl">http://www.sunshine2k.de/coding/java/TriangleRasterization/TriangleRasterization.html</code></p><p>Advanced Rasterization. <span class="refurl">http://devmaster.net/posts/6145/advanced-rasterization</code></p><p>Wu Anti-aliased Lines. <span class="refurl">http://freespace.virgin.net/hugo.elias/graphics/x_wuline.htm</code></p><p>Xiaolin Wu's line algorithm. <span class="refurl">http://en.wikipedia.org/wiki/Xiaolin_Wu%27s_line_algorithm</code></p><p>Alpha compositing. <span class="refurl">http://en.wikipedia.org/wiki/Alpha_compositing</code></p></section><section><h2>Open-source on Github</h2><h2><a href="https://github.com/linusyang/jscube/" target="_blank">github.com/linusyang/jscube</a></h2><hr><ul><li>Slides at <a href="https://linusyang.com/jscube/ppt/" target="_blank">linusyang.com/jscube/ppt</a></li><li>Also open-sourced on Github</li></ul></section><section><h2>Questions?</h2></section><section><h2>Thanks :)</h2></section></article><script src="bower_components/bespoke.js/dist/bespoke.min.js"></script><script src="bower_components/bespoke-bullets/dist/bespoke-bullets.min.js"></script><script src="bower_components/bespoke-hash/dist/bespoke-hash.min.js"></script><script src="bower_components/bespoke-state/dist/bespoke-state.min.js"></script><script src="bower_components/prism/prism.js"></script><script src="bower_components/prism/components/prism-coffeescript.min.js"></script><script src="ppt.js"></script></body></html>

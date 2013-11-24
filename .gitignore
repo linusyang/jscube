@@ -5,3 +5,5 @@ npm-debug.log
 .idea/
 .js
 src/*.js
+ppt/src/*.css
+ppt/src/*.html

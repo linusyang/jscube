@@ -1,0 +1,230 @@
+@import 'nib' // CSS3 extensions for Stylus: http://visionmedia.github.io/nib/
+
+// variables!
+
+darkgrey = #222
+brightGreen = #CC3885
+brightBlue = #0093CC
+
+slide_width = 100%
+slide_height = 100%
+slide_background = darkgrey
+
+// This seems to be correspond with an A4, landscape page height in Chrome
+slide_height_print = 743px
+
+slide_transition_length = .6s
+slide_transition_easing = ease
+slide_transition_translate_x = 0
+slide_transition_rotate_y = 90deg
+
+bullet_transition_length = .3s
+bullet_transition_easing = ease
+bullet_transition_translate_x = 16px
+
+// Print wide
+@page
+  size: landscape
+  margin: 0
+
+@media print
+  *
+    -webkit-print-color-adjust: exact
+
+// Fonts
+
+@font-face
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 700;
+  src:
+    local("Open Sans Bold"),
+    local("OpenSans-Bold"),
+    url('fonts/opensans-bold.woff') format('woff');
+
+@font-face
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 300;
+  src: local("Open Sans Light"),
+    local("OpenSans-Light"),
+    url('fonts/opensans-light.woff') format('woff');
+
+@font-face
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  src:
+    local("Open Sans"),
+    local("OpenSans"),
+    url('fonts/opensans.woff') format('woff');
+
+@font-face
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 800;
+  src:
+    local("Open Sans Extrabold"),
+    local("OpenSans-Extrabold"),
+    url('fonts/opensans-extrabold.woff') format('woff');
+
+h1
+  font-family: 'Open Sans', cursive;
+
+.tiny
+  font-size: 18px
+
+.refurl
+  font-family: monospace
+  font-size: 12px
+
+.inline-code
+  font-family: monospace
+
+// base
+*
+  box-sizing: border-box
+  margin: 0
+  padding: 0
+
+
+// bespoke.js layout styles
+
+article
+  transition: background slide_transition_length slide_transition_easing
+  display: none
+  &.bespoke-parent
+    display: block
+    position: absolute
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+    overflow: hidden
+    @media print
+      overflow: visible
+      position: static
+    perspective: 600px
+
+.bespoke-slide
+  position: absolute
+  top: 0
+  left: 0
+  @media print
+    position: static
+  transition: all slide_transition_length slide_transition_easing
+  transform-origin: 50% 50% ((slide_width / 2) * -1)
+  backface-visibility: hidden
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: center
+  text-align: center
+  width: slide_width
+  height: slide_height
+  @media print
+    height: slide_height_print
+    page-break-before: always
+  background: slide_background
+  padding: 40px
+  border-radius: 0
+
+.bespoke-before
+  transform: translateX(slide_transition_translate_x * -1) rotateY(slide_transition_rotate_y * -1)
+  @media print
+    transform: none
+
+.bespoke-after
+  transform: translateX(slide_transition_translate_x) rotateY(slide_transition_rotate_y)
+  @media print
+    transform: none
+
+.bespoke-inactive
+  opacity: 0
+  @media print
+    opacity: 1
+  pointer-events: none
+
+.bespoke-active
+  opacity: 1
+
+// bespoke-bullet styles
+
+.bespoke-bullet
+  transition: all bullet_transition_length bullet_transition_easing
+
+.bespoke-bullet-inactive
+  opacity: 0
+  @media print
+    opacity: 1
+  li&
+    transform: translateX(bullet_transition_translate_x)
+
+.bespoke-bullet-active
+  opacity: 1
+
+// bespoke-state styles
+
+.emphatic,
+.emphatic .bespoke-slide
+  background: slide_background
+
+// prism styles
+
+code
+  padding: 26px !important
+
+// content styles
+
+body
+  background: darkgrey
+  font-family: "Open Sans", "Fuse-Segoe-UI", helvetica, arial, sans-serif
+  font-size: 18px
+  color: whiteSmoke
+  font-weight: 100
+
+h1, h2, h3
+  font-weight: 100
+
+h1
+  font-size: 72px
+  line-height: 82px
+  letter-spacing: -2px
+  margin-bottom: 16px
+
+h2
+  font-size: 42px
+  letter-spacing: -1px
+  margin-bottom: 8px
+
+h3
+  font-size: 24px
+  font-weight: normal
+  margin-bottom: 24px
+  color: whiteSmoke
+
+hr
+  visibility: hidden
+  height: 20px
+
+ul
+  list-style: none
+
+li
+  margin-bottom: 12px
+  font-size: 24px
+
+p
+  margin: 0 100px 12px
+  line-height: 22px
+
+a
+  color: brightBlue
+  text-decoration: none
+
+strong
+  font-weight: 100
+  color: brightGreen
+
+td
+  padding: 10px
