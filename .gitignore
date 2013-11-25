@@ -7,3 +7,4 @@ npm-debug.log
 src/*.js
 ppt/src/*.css
 ppt/src/*.html
+ppt/src/bower_components/
