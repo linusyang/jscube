@@ -47,19 +47,19 @@ module.exports = function(grunt) {
       src: {
         files: [{
           expand: true,
-          cwd: 'src/',
-          src: [
-            '**/*',
-            '!<%= jade.src.files[0].src %>',
-            '!<%= stylus.src.files[0].src %>',
-            '!<%= coffee.src.files[0].src %>'
-          ],
-          dest: './'
+          cwd: 'src/img/',
+          src: '**/*',
+          dest: './img/'
         },{
           expand: true,
           cwd: 'src/fonts/',
           src: '**/*',
           dest: './fonts/'
+        },{
+          expand: true,
+          cwd: 'src/',
+          src: 'ppt.js',
+          dest: './'
         }]
       }
     },
